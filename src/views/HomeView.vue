@@ -1,7 +1,8 @@
 <template>
   <main>
+    <!-- Navbar -->
     <MyNavbar />
-
+    <!-- Search Bar -->
     <v-container fluid>
       <!-- Barra di ricerca sopra l'immagine di sfondo -->
       <v-row justify="center" class="search-bar">
@@ -17,20 +18,29 @@
         </v-col>
       </v-row>
     </v-container>
+    <!-- Card Section -->
+    <h2 class= "my-4 ml-4"> Scegli la tua cucina preferita!</h2>
     <div class="container__ricerca">
-      <div v-for="recipe in recipes"><!-- 
-        <v-card class="mx-auto" max-width="344">
-          <v-img height="200px" v-bind:src="recipe.recipe.image" cover></v-img>
-
-          <v-card-title>
-            <h1>{{ recipe.recipe.cuisineType[0] }}</h1>
-          </v-card-title>
-
-          <v-card-actions>
-            <v-btn color="orange-lighten-2" text="Esplora"></v-btn>
-          </v-card-actions>
-        </v-card> -->
-      </div>
+      <v-row justify="space-evenly" align="center" class="py-2">
+  <v-col
+    v-for="(cuisine, index) in cuisines"
+    :key="index"
+    cols="12"
+    sm="4"
+    md="3"
+  >
+    <v-card
+      class="mx-auto my-2"
+      max-width="300"
+      @click="$router.push({ path: '/ricerca', query: { cuisine: cuisine.name } })"
+    >
+      <v-img :src="cuisine.image" height="200px" cover></v-img>
+      <v-card-title class="text-h6 text-center">
+        {{ cuisine.label }}
+      </v-card-title>
+    </v-card>
+  </v-col>
+</v-row>
     </div>
   </main>
 </template>
@@ -39,6 +49,10 @@
 import MyNavbar from "../components/navbar.vue";
 import axios from "axios";
 
+axios.get("https://jsonplaceholder.typicode.com/todos/1")
+  .then(response => console.log(response.data))
+  .catch(error => console.error(error));
+
 export default {
   name: "HomeView",
   components: {
@@ -46,58 +60,29 @@ export default {
   },
   data() {
     return {
-      searchQuery: "",
-      recipes:[{}],
-      error: null,
+      // Array statico delle cucine
+      cuisines: [
+        { name: "italian", label: "Italiana", image: "https://th.bing.com/th/id/OIP._UqMm9j0SF5pzduU9Y-lMwHaDO?rs=1&pid=ImgDetMain" },
+        { name: "american", label: "Americana", image: "https://staticcookist.akamaized.net/wp-content/uploads/sites/21/2022/06/cheeseburger-ricette-americane.jpg" },
+        { name: "mexican", label: "Messicana", image: "https://www.samtell.com/hs-fs/hubfs/Blogs/Four-Scrumptous-Tacos-Lined-up-with-ingredients-around-them-1.jpg?width=1800&name=Four-Scrumptous-Tacos-Lined-up-with-ingredients-around-them-1.jpg" },
+        { name: "japanese", label: "Giapponese", image: "https://img.freepik.com/premium-photo/ramen-noodle-wallpaper-very-cool_1012508-9.jpg" },
+        { name: "french", label: "Francese", image: "https://static.wixstatic.com/media/720a92_ead3f871ba16409da6bf74d45911b062~mv2.jpg/v1/fill/w_1000,h_667,al_c,q_85/720a92_ead3f871ba16409da6bf74d45911b062~mv2.jpg" },
+        { name: "spanish", label: "Spagnola", image: "https://2.bp.blogspot.com/-WJnEGU0YJ2U/UOhu0EVXEVI/AAAAAAAAAVw/Q6o20jtdZBA/s1600/paella.jpg" },
+      ],
     };
-  },
-  methods: {
-    fetchRecipes() {
-
-      let ArrayStati = ["American", "Italian", "Mexican"]
-
-      for(let i = 0; i < ArrayStati.length; i++){
-      axios
-        .get("https://api.edamam.com/api/recipes/v2", {
-          params: {
-            type: "public",
-            beta: true,
-            app_id: "fed994cd",
-            app_key: "af0e83d2d10db0905af45dcedcba81f0",
-            cuisineType: ArrayStati[i],
-            random: true,
-          },
-          headers: {
-            accept: "application/json",
-            "Edamam-Account-User": "Giada",
-            "Accept-Language": "en",
-          },
-        })
-        .then((response) => {
-
-          let oggettoMomentaneo = JSON.parse(JSON.stringify(response.data.hits[0]))
-          this.recipes.push(JSON.parse(JSON.stringify(oggettoMomentaneo.recipe)));
-          console.log(oggettoMomentaneo);
-          console.log(this.recipes);
-        })
-        .catch((error) => {
-          this.error = error;
-          console.error("Error fetching recipes:", error);
-        });
-
-      }
-    },
-  },
-  mounted() {
-    this.fetchRecipes();
   },
 };
 </script>
 
 <style scoped>
+
+.text-center {
+  text-align: center;
+}
+
 .search-bar {
   position: relative;
-  z-index: 2; /* Assicurati che la barra di ricerca si sovrapponga all'immagine */
+  z-index: 2; /* La barra di ricerca si sovrappone all'immagine */
   color: #ffffff;
   opacity: 0.9;
 }
@@ -116,21 +101,18 @@ export default {
 }
 
 .container__ricerca {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: auto;
-  grid-template-areas: ". . .";
-  margin: 4vh 8vw 1vh 8vw;
-}
-
-.container__ricerca div {
-  margin: 1vh;
+  display: flex;
+  flex-wrap: wrap; /* Permette di andare a capo */
+  justify-content: center; /* Centra gli elementi orizzontalmente */
+  max-width: 1400px;
+  margin: 20px auto;
+  gap: 20px; /* Spazi tra gli elementi */
 }
 
 @media only screen and (max-width: 800px) {
   .container__ricerca {
-    grid-template-columns: 1fr;
-    grid-template-areas: ".";
+    flex-direction: column; /* Dispone gli elementi in una colonna */
+    align-items: center; /* Centra gli elementi nella colonna */
   }
 }
 </style>

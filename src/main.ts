@@ -19,6 +19,7 @@ import RicercaView from './views/RicercaView.vue'
 import LoginView from './views/LoginView.vue'
 import ProfiloView from './views/ProfiloView.vue'
 import RicettaView from './views/RicettaView.vue'
+import CucinaView from './views/CucinaView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,12 @@ const router = createRouter({
       path: '/ricerca',
       name: 'ricerca',
       component: RicercaView,
+    },
+
+    {
+      path: '/cucina:id',
+      name: 'cucina',
+      component: CucinaView,
     },
     
     {
