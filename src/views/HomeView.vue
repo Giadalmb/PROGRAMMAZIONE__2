@@ -1,7 +1,6 @@
 <template>
   <main>
     <!-- Navbar -->
-    <MyNavbar />
     <!-- Search Bar -->
     <v-container fluid>
       <!-- Barra di ricerca sopra l'immagine di sfondo -->
