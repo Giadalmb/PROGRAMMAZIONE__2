@@ -1,3 +1,26 @@
+:root {
+  --root__green: #48a9a6;
+  --root__green__trasparent: #48a9a6c2;
+}
+
 .card__relevant__one{
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.container__ricerca {
+  margin: 10vh 8vw 10vh 8vw;
+}
+
+.ods__mini__card {
+  border-radius: 1.5rem;
+  margin: 1vw;
+  padding: 1vw 1.5vw 1vw 1.5vw;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+@media only screen and (max-width: 800px) {
+  .container__ricerca {
+    flex-direction: column; /* Dispone gli elementi in una colonna */
+    align-items: center; /* Centra gli elementi nella colonna */
+  }
 }

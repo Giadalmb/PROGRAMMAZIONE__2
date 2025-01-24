@@ -10,6 +10,7 @@
     "@mdi/font": "7.4.47",
     "all": "^0.0.0",
     "axios": "^1.7.9",
+    "firebase": "^11.2.0",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
     "vue-router": "^4.4.5",

@@ -1,33 +1,34 @@
 <template>
   <v-app-bar color="secondary" prominent>
-    <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <!-- <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
 
-    <v-toolbar-title>MyRicette</v-toolbar-title>
+    <v-toolbar-title style="cursor: pointer;" @click="$router.push({ path: '/'})">giari</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
     <template v-if="$vuetify.display.mdAndUp">
       <!-- Cambia il testo del bottone in base allo stato di autenticazione -->
-      <v-btn @click="handleAuth">
-        {{ isAuthenticated ? 'Profilo' : 'Accedi' }}
+      <v-btn @click="$router.push({ path: '/profilo', query: { id:  user} })">
+        profile
       </v-btn>
     </template>
   </v-app-bar>
 
-  <v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'left' : undefined" temporary>
+<!--   <v-navigation-drawer v-model="drawer" :location="$vuetify.display.mobile ? 'left' : undefined" temporary>
     <v-list :items="items"></v-list>
-  </v-navigation-drawer>
+  </v-navigation-drawer> -->
 </template>
 
 <script>
+import DataService from "../dataservice";
 export default {
   data: () => ({
     drawer: false,
     group: null,
-    isAuthenticated: false, // Stato di autenticazione inizialmente impostato su "non autenticato"
+    user: localStorage.getItem("login"),
     items: [
       {
-        title: 'Foo',
+        title: 'Profilo',
         value: 'foo',
       },
       {
@@ -47,16 +48,9 @@ export default {
 
   
   methods: {
-    handleAuth() {
-      if (!this.isAuthenticated) {
-        // Logica per accedere (ad esempio, aprire la finestra di login)
-        // Qui simula l'accesso impostando isAuthenticated a true
-        this.isAuthenticated = true;
-      } else {
-        // Logica per andare alla pagina del profilo
-        console.log("Vai alla pagina del profilo");
-      }
-    },
+  },
+
+  mounted(){
   },
 
   watch: {
