@@ -73,18 +73,18 @@
               @click="
                 $router.push({
                   path: '/ricetta',
-                  query: { cuisine: ricetta.title, id: ricetta.id },
+                  query: { cuisine: ricetta['title'], id: ricetta['id']},
                 })
               "
             >
               <v-img
                 class="ods__mini__card"
-                :src="ricetta.image"
+                :src="ricetta['image']"
                 height="200px"
                 cover
               ></v-img>
               <v-card-title class="text-h6 text-center">
-                {{ ricetta.title }}
+                {{ricetta['title']}}
               </v-card-title>
             </v-card>
           </v-col>
@@ -95,14 +95,9 @@
 </template>
 
 <script lang="ts">
-import MyNavbar from "../components/navbar.vue";
-import axios from "axios";
 
 export default {
   name: "HomeView",
-  components: {
-    MyNavbar,
-  },
   data() {
     return {
       // Ricerca normale

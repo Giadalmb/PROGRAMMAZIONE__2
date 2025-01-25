@@ -1,5 +1,4 @@
 <template>
-    <div>
     <div class="template__outside template__outside__registrati" v-if="this.sezione__accesso == 0">
         <div class="template__inside">
             <div style="margin: 4vh 0vh 4vh 0vh;">
@@ -51,8 +50,6 @@
             </v-form>
             <a class="errors">{{ this.errore }}</a>
         </div>
-    </div>
-        
     </div>
 </template>
 <style> 

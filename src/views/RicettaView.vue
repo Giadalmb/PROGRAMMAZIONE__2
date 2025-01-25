@@ -1,20 +1,19 @@
 <template>
   <main>
-    <MyNavbar />
-    <div class="container__ricetta">
-      <h1>{{ ricercaPerQuery.title }}</h1>
+    <div class="container__ricetta" v-if="ricercaPerQuery">
+      <h1>{{ ricercaPerQuery["title"] }}</h1>
       <div class="container__ricetta__inside">
         <div>
           <div
             class="ods__mini__card"
             style="height: 60vh; background-size: cover"
-            :style="{ backgroundImage: 'url(' + ricercaPerQuery.image + ')' }"
+            :style="{ backgroundImage: 'url(' + ricercaPerQuery['image'] + ')' }"
           ></div>
           <div class="ods__mini__card">
             <h3>Diet</h3>
             <v-sheet class="mx-auto" max-width="90vw">
               <v-slide-group show-arrows>
-                <v-slide-group-item v-for="diet in ricercaPerQuery.diets">
+                <v-slide-group-item v-for="diet in ricercaPerQuery['diets']">
                   <v-btn class="ma-2" rounded>
                     <a>{{ diet }}</a>
                   </v-btn>
@@ -26,7 +25,7 @@
             <h3>Type of dish</h3>
             <v-sheet class="mx-auto" max-width="90vw">
               <v-slide-group show-arrows>
-                <v-slide-group-item v-for="tipo in ricercaPerQuery.dishTypes">
+                <v-slide-group-item v-for="tipo in ricercaPerQuery['dishTypes']">
                   <v-btn class="ma-2" rounded>
                     <a>{{ tipo }}</a>
                   </v-btn>
@@ -36,7 +35,7 @@
           </div>
           <div class="ods__mini__card">
             <h3>Description</h3>
-            <div v-html="ricercaPerQuery.summary"></div>
+            <div v-html="ricercaPerQuery['summary']"></div>
           </div>
         </div>
         <div class="navbar__laterale__post">
@@ -44,11 +43,20 @@
             <div>
               <div class="ods__mini__card">
                 <h3  style="margin-bottom: 1vh;">Ingredients</h3>
-                <div style="margin: .5vh;" v-for="tipo in ricercaPerQuery.extendedIngredients">
-                  <a
-                    ><strong style="color: var(--root__green);">{{ tipo.name }}: </strong></a
+                <div style="margin: .5vh;" v-for="(data, index) in ricercaPerQuery['extendedIngredients']">
+
+
+
+                  <!-- Non ho usato le proprietà dell'oggetto "data" perchè mi da' errore che non trova la sezione 
+                   interna dell'oggetto finchè non mi viene popolato post chiamata all'API. Quindi quello che faccio
+                   è andare a cercare all'interno dell'oggetto sezione per sezione ogni volta, più brutto però almeno non da' errori
+                   che poi vabbè sono errori che non mi fermano il funzionamento del codice perà danno fastidio da vedere. -->
+                  
+                  
+                   <a
+                    ><strong style="color: var(--root__green);">{{ ricercaPerQuery['extendedIngredients'][index]["name"] }}: </strong></a
                   >
-                  <a>{{ tipo.original }}</a>
+                  <a>{{ ricercaPerQuery['extendedIngredients'][index]["original"]  }}</a>
                 </div>
               </div>
               <div class="ods__mini__card">
@@ -105,21 +113,16 @@
 </template>
 
 <script lang="ts">
-import MyNavbar from "../components/navbar.vue";
-import axios from "axios";
 import DataService from "../dataservice";
 
 import { doc, deleteDoc, setDoc, getDoc } from "firebase/firestore";
 
 export default {
   name: "HomeView",
-  components: {
-    MyNavbar,
-  },
   data() {
     return {
       // Ricerca normale
-      ricercaPerQuery: {},
+      ricercaPerQuery: null,
       query: "",
       ricetta: this.$route.query.cuisine,
       user: localStorage.getItem("login"),
@@ -129,7 +132,7 @@ export default {
 
   methods: {
     async fetchNormalSearch() {
-      this.ricercaPerQuery = [];
+      this.ricercaPerQuery = null;
       // Chiamata API per la riceamp-§ormale
       const response = await fetch(
         `https://api.spoonacular.com/recipes/${this.$route.query.id}/information?apiKey=1333d6e03cb34a15bd64e7ad984cb3a2`
