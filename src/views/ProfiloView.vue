@@ -1,86 +1,72 @@
 <template>
   <div class="profilo__container__generale">
-  <div class="profilo__upper" v-if="arrayUtenti">
-    <div
-      class="profilo__upper__sez__uno"
-      :style="{
+    <div class="profilo__upper" v-if="arrayUtenti">
+      <div class="profilo__upper__sez__uno" :style="{
         backgroundImage: 'url(' + arrayUtenti['profile_picture_url'] + ')',
-      }"
-    ></div>
-    <div class="profilo__upper__sez__due">
-      <div>
-        <h1>Bienvenido</h1>
-        <h1 style="margin-top: -20px" class="h1__big">
-          {{ arrayUtenti["username"] }}
-        </h1>
-      </div>
-      <div>
-        <h4
-          v-if="user == ':' + user__local"
-          @click="$router.push({ name: 'modificaProfilo' })"
-          style="cursor: pointer"
-        >
-          Modifica profilo
-        </h4>
-      </div>
-      <!--           <div>
+      }"></div>
+      <div class="profilo__upper__sez__due">
+        <div>
+          <h1>Bienvenido</h1>
+          <h1 style="margin-top: -20px" class="h1__big">
+            {{ arrayUtenti["username"] }}
+          </h1>
+        </div>
+        <div>
+          <h4 v-if="user == ':' + user__local" @click="$router.push({ name: 'modificaProfilo' })"
+            style="cursor: pointer">
+            Modifica profilo
+          </h4>
+        </div>
+        <!--           <div>
         <h3>{{ this.arrayUtenti.bio }}</h3>
       </div> -->
+      </div>
     </div>
-  </div>
-  <div class="profilo__container">
-    <div>
-      <div class="profilo__centro">
-        <div>
-          <div class="gallery-image">
-            <div
-              class="ods__mini__card" style="cursor:pointer"
-              v-for="(pasti,i) in arrayPasti"
-              @click="sezioneSalvati = i"
-            >
-              <h3>{{ pasti }}</h3>
-            </div>
-          </div>
+    <div class="profilo__container">
+      <div>
+        <div class="profilo__centro">
           <div>
-            <v-row>
-              <v-col cols="12" md="3" v-for="ricetta in arraySalvati[sezioneSalvati]">
-                <v-card
-                  class="mx-auto my-2 ods__mini__card"
-                  max-width="300"
-                  @click="
+            <div class="gallery-image">
+              <div class="ods__mini__card" style="cursor:pointer" v-for="(pasti, i) in arrayPasti"
+                @click="sezioneSalvati = i"
+                :style="sezioneSalvati == i ? 'background-color: var(--root__green)' : 'background-color: white'"
+                >
+                <h3 :style="sezioneSalvati == i ? 'color: white' : 'color: black'">{{ pasti }}</h3>
+              </div>
+            </div>
+            <div>
+              <v-row>
+                <div style="min-height: 30vh; display: flex;width: 100%;align-items: center;justify-content: center;" v-if="arraySalvati[sezioneSalvati].length == 0">
+                  <h3 style="color: var(--root__green);">No recipes</h3>
+                </div>
+                <v-col cols="12" md="3" v-for="ricetta in arraySalvati[sezioneSalvati]">
+                  <v-card class="mx-auto my-2 ods__mini__card" max-width="300" @click="
                     $router.push({
                       path: '/ricetta',
                       query: { cuisine: ricetta['title'], id: ricetta['id'] },
                     })
-                  "
-                >
-                  <v-img
-                    class="ods__mini__card"
-                    :src="ricetta['image']"
-                    height="200px"
-                    cover
-                  ></v-img>
-                  <v-card-title class="text-h6 text-center">
-                    {{ ricetta["title"] }}
-                  </v-card-title>
-                </v-card>
-              </v-col>
-            </v-row>
+                    ">
+                    <v-img class="ods__mini__card" :src="ricetta['image']" height="200px" cover></v-img>
+                    <v-card-title class="text-h6 text-center">
+                      {{ ricetta["title"] }}
+                    </v-card-title>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="ods__mini__card">
+      <div class="ods__mini__card">
         <h2>Salvati</h2>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <style>
-
-.profilo__container__generale{
-  margin:8vh 5vh 8vh 5vw
+.profilo__container__generale {
+  margin: 8vh 5vh 8vh 5vw
 }
 
 .gallery-image {
@@ -175,7 +161,7 @@ export default {
         const querySnapshot = await getDocs(
           collection(DataService.dbEx(), "likes_" + this.arrayPasti[i])
         );
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc: any) => {
           if (doc.data().userId == this.$route.query.id) {
             this.artworkData(doc.data().postId, this.arrayPasti[i]);
           }

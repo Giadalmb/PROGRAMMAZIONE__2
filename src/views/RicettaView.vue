@@ -116,7 +116,6 @@
 import DataService from "../dataservice";
 
 import { doc, deleteDoc, setDoc, getDoc } from "firebase/firestore";
-
 export default {
   name: "HomeView",
   data() {
