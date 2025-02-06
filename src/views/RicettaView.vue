@@ -87,7 +87,7 @@
                 >
                   <strong
                     :style="{ color: liked.lunch ? '#ffffff' : '#000000' }"
-                    >dinner</strong
+                    >lunch</strong
                   >
                 </div>
                 <div
@@ -100,7 +100,7 @@
                 >
                   <strong
                     :style="{ color: liked.dinner ? '#ffffff' : '#000000' }"
-                    >lunch</strong
+                    >dinner</strong
                   >
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default {
     checkIfLiked: async function (pasto: string) {
       const docRefUt = doc(
         DataService.dbEx(),
-        "likes_" + pasto,
+        "likes_giari_" + pasto,
         this.user + "_oppla_" + this.$route.query.id
       );
       const docSnap = await getDoc(docRefUt);
@@ -201,7 +201,7 @@ export default {
       deleteDoc(
         doc(
           DataService.dbEx(),
-          "likes_" + pasto,
+          "likes_giari_" + pasto,
           this.user + "_oppla_" + this.$route.query.id
         )
       ).then(() => {
@@ -212,7 +212,7 @@ export default {
       const docRef = await setDoc(
         doc(
           DataService.dbEx(),
-          "likes_" + pasto,
+          "likes_giari_" + pasto,
           this.user + "_oppla_" + this.$route.query.id
         ),
         {
@@ -237,6 +237,8 @@ export default {
 @import "../assets/general.css";
 .navbar__laterale__post__inside {
   position: fixed;
+  height: 800px;
+  overflow-y: scroll;
 }
 
 .container__ricetta__inside {

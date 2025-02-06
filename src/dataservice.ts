@@ -17,13 +17,19 @@ import {
 // Your web app's Firebase configuration
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCP6C4YKYwTALIAAjWurlMPt3V0rfC82OM",
-  authDomain: "giari-17428.firebaseapp.com",
-  projectId: "giari-17428",
-  storageBucket: "giari-17428.firebasestorage.app",
-  messagingSenderId: "948460807379",
-  appId: "1:948460807379:web:afc507c71f6bf27bd0a026",
-  measurementId: "G-FYM775EXTY"
+
+  apiKey: "AIzaSyCyfxITBJFiLpy86OkpuyzXP8p_cUwS5Ko",
+
+  authDomain: "artella-3facf.firebaseapp.com",
+
+  projectId: "artella-3facf",
+
+  storageBucket: "artella-3facf.appspot.com",
+
+  messagingSenderId: "901180588632",
+
+  appId: "1:901180588632:web:f2da9a573d41c97d9c802d"
+
 };
 
 
@@ -45,7 +51,7 @@ export default {
   },
   getUserData: async function (user: string) {
 
-      const docRef = doc(db, "utenti", user);
+      const docRef = doc(db, "utenti_giari", user);
       const docSnap = await getDoc(docRef);
       
       if (docSnap.exists()) {
@@ -65,7 +71,7 @@ export default {
       .then((userCredential: any) => {
         // Signed up 
         const user = userCredential.user;
-        return setDoc(doc(db, "utenti", user.uid), {
+        return setDoc(doc(db, "utenti_giari", user.uid), {
           idutente: user.uid,
           username: username,
           email: email,

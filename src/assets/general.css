@@ -18,6 +18,25 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
+.ods__mini__card__button{
+  border-radius: 1.5rem;
+  margin: 1vw;
+  padding: 1vw 1.5vw 1vw 1.5vw;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  transition-duration: .2s;
+}
+
+.ods__mini__card__button:hover{
+  color: white;
+  background-color: var(--root__green);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.container__generale__router{
+  margin: 6vh 4vw 6vh 4vw;
+}
+
+
 @media only screen and (max-width: 800px) {
   .container__ricerca {
     flex-direction: column; /* Dispone gli elementi in una colonna */

@@ -12,8 +12,8 @@
           </h1>
         </div>
         <div>
-          <h4 v-if="user == ':' + user__local" @click="$router.push({ name: 'modificaProfilo' })"
-            style="cursor: pointer">
+          <h4 v-if="user == user__local" 
+            style="cursor: pointer" @click="$router.push({ path: '/modifica_profilo', query: { id:  user} })" >
             Modifica profilo
           </h4>
         </div>
@@ -58,7 +58,10 @@
         </div>
       </div>
       <div class="ods__mini__card">
-        <h2>Salvati</h2>
+        <h2>Today's meal</h2>
+        <div v-for="ricetta in dayObj" class="ods__mini__card">
+          <a>{{ricetta.title}}</a>
+        </div>
       </div>
     </div>
   </div>
@@ -141,12 +144,17 @@ export default {
       user: this.$route.query.id,
       sezioneSalvati: 0,
       user__local: localStorage.getItem("login"),
+      dayObj:{
+        breakfast: "",
+        lunch: "",
+        dinner: ""
+      }
     };
   },
   methods: {
     async takeUsers() {
       const querySnapshot = await getDocs(
-        collection(DataService.dbEx(), "utenti")
+        collection(DataService.dbEx(), "utenti_giari")
       );
       querySnapshot.forEach((doc: any) => {
         if (doc.id == this.$route.query.id) {
@@ -159,7 +167,7 @@ export default {
       this.arrayPasti = ["breakfast", "lunch", "dinner"];
       for (let i = 0; i < this.arrayPasti.length; i++) {
         const querySnapshot = await getDocs(
-          collection(DataService.dbEx(), "likes_" + this.arrayPasti[i])
+          collection(DataService.dbEx(), "likes_giari_" + this.arrayPasti[i])
         );
         querySnapshot.forEach((doc: any) => {
           if (doc.data().userId == this.$route.query.id) {
@@ -167,7 +175,7 @@ export default {
           }
         });
       }
-      console.log(this.arraySalvati);
+      this.createDay()
     },
     async artworkData(title: any, pasto: any) {
       // Chiamata API per la riceamp-§ormale
@@ -179,14 +187,40 @@ export default {
         this.arraySalvati[0].push(data);
       } else if (pasto == "lunch") {
         this.arraySalvati[1].push(data);
-      } else {
+      } else if (pasto == "dinner") {
         this.arraySalvati[2].push(data);
       }
     },
+
+    createDay() {      
+      //ARRAY DI ESEMPIO PERCHÈ HO RAGGIUNTO IL MASSIMO DI RICHIESTE GIORNALIERE
+      const foodMatrix: string[][] = [
+        ["Pancakes", "Oatmeal", "Scrambled Eggs", "Smoothie"], // Breakfast
+        ["Grilled Chicken", "Pasta Salad", "Quinoa Bowl", "Vegetable Stir Fry"], // Lunch
+        ["Salmon with Rice", "Steak with Potatoes", "Vegetable Soup", "Tofu Stir Fry"] // Dinner
+      ];
+      
+      const getRandomDish = (mealArray:any) => {
+        return mealArray[Math.floor(Math.random() * mealArray.length)];
+      };
+      
+      this.dayObj = {
+        breakfast: getRandomDish(this.arraySalvati[0]) || "No dishes",
+        lunch: getRandomDish(this.arraySalvati[1]) || "No dishes",
+        dinner: getRandomDish(this.arraySalvati[2]) || "No dishes"
+      };
+
+      console.log(this.arraySalvati[0])
+      console.log(this.arraySalvati[1])
+      console.log(this.arraySalvati[2])
+      
+      return this.dayObj;
+    }
   },
 
   mounted() {
     this.takeUsers();
+    this.createDay()
     this.takeUserPost();
   },
 };
