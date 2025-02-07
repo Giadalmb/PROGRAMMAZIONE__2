@@ -1,6 +1,12 @@
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat"), url(./assets/Montserrat-BlackItalic.ttf) format("truetype");
+}
+
 :root {
   --root__green: #48a9a6;
   --root__green__trasparent: #48a9a6c2;
+  --ods: #2929291a;
 }
 
 .card__relevant__one{
@@ -19,6 +25,7 @@
 }
 
 .ods__mini__card__button{
+  cursor: pointer;
   border-radius: 1.5rem;
   margin: 1vw;
   padding: 1vw 1.5vw 1vw 1.5vw;
@@ -42,4 +49,22 @@
     flex-direction: column; /* Dispone gli elementi in una colonna */
     align-items: center; /* Centra gli elementi nella colonna */
   }
+  .ods__mini__card {
+    border-radius: 1.5rem;
+    margin: 1vw;
+    padding: 1.5vw 2vw 1.5vw 2vw;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+  .ods__mini__card__button{
+    border-radius: 1.5rem;
+    margin: 1vw;
+    padding: 1.5vw 2vw 1.5vw 2vw;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    transition-duration: .2s;
+  }
+}
+
+.ods text {
+  font-family: 'Montserrat', sans-serif !important;
+  cursor: pointer;
 }

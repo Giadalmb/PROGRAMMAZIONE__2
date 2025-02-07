@@ -22,8 +22,16 @@
       </div> -->
       </div>
     </div>
+    <div class="button__phone">
+      <div class="ods__mini__card__button" @click="this.side_act = 0">
+        <h3>Saved</h3>
+      </div>
+      <div class="ods__mini__card__button" @click="this.side_act = 1">
+        <h3>Today's</h3>
+      </div>
+    </div>
     <div class="profilo__container">
-      <div>
+      <div v-if="this.side_act == 0 || this.side_act == 2">
         <div class="profilo__centro">
           <div>
             <div class="gallery-image">
@@ -57,10 +65,11 @@
           </div>
         </div>
       </div>
-      <div class="ods__mini__card">
+      <div class="ods__mini__card" v-if="this.side_act == 1 || this.side_act == 2">
         <h2>Today's meal</h2>
-        <div v-for="ricetta in dayObj" class="ods__mini__card">
-          <a>{{ricetta.title}}</a>
+        <div v-for="ricetta, meal in dayObj" class="ods__mini__card">
+          <h3>{{meal}}</h3>
+          <a style="color: var(--root__green__trasparent)">{{ricetta.title}}</a>
         </div>
       </div>
     </div>
@@ -68,11 +77,16 @@
 </template>
 
 <style>
+.button__phone{
+  display: none;
+}
+
 .profilo__container__generale {
   margin: 8vh 5vh 8vh 5vw
 }
 
 .gallery-image {
+  margin-bottom: 4vh;
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
@@ -126,6 +140,15 @@
     display: block;
     align-items: center;
   }
+  .profilo__container {
+    display: block
+}
+.button__phone{
+  margin-bottom: 8vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
 }
 </style>
 
@@ -148,7 +171,8 @@ export default {
         breakfast: "",
         lunch: "",
         dinner: ""
-      }
+      },
+      side_act: 2
     };
   },
   methods: {
@@ -201,27 +225,37 @@ export default {
       ];
       
       const getRandomDish = (mealArray:any) => {
-        return mealArray[Math.floor(Math.random() * mealArray.length)];
+        const randomIndex = Math.floor(Math.random() * mealArray.length);
+          return mealArray[randomIndex];
       };
       
+      setTimeout(() => {
       this.dayObj = {
         breakfast: getRandomDish(this.arraySalvati[0]) || "No dishes",
         lunch: getRandomDish(this.arraySalvati[1]) || "No dishes",
         dinner: getRandomDish(this.arraySalvati[2]) || "No dishes"
       };
-
-      console.log(this.arraySalvati[0])
-      console.log(this.arraySalvati[1])
-      console.log(this.arraySalvati[2])
+        }
+        , 1000);
       
       return this.dayObj;
+    },
+    controllaGrand(){
+      if(window.innerWidth > 1200){
+        this.side_act = 2
+      }
+      else{
+        if(this.side_act == 2){
+          this.side_act = 1
+        }
+      }
     }
   },
 
   mounted() {
     this.takeUsers();
-    this.createDay()
     this.takeUserPost();
+    window.addEventListener("resize", this.controllaGrand);
   },
 };
 </script>
